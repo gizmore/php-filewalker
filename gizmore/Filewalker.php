@@ -20,6 +20,7 @@ final class Filewalker
 	
 	/**
 	 * Callback definition dummy.
+	 * This is the example signature of a filewalker callback.
 	 */
 	public static function filewalker_stub(string $entry, string $fullpath, array $args=null)
 	{
