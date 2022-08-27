@@ -11,7 +11,7 @@ namespace gizmore;
  * @link https://github.com/gizmore/php-filewalker
  * 
  * @author gizmore
- * @version 7.0.0
+ * @version 7.0.1
  * @since 5.0.0
  */
 final class Filewalker
@@ -22,14 +22,14 @@ final class Filewalker
 	 * Callback definition dummy.
 	 * This is the example signature of a filewalker callback.
 	 */
-	public static function filewalker_stub(string $entry, string $fullpath, array $args=null)
+	public static function filewalker_stub(string $entry, string $fullpath, $args=null) : void
 	{
 	}
 	
 	/**
 	 * Traverse a directory and execute callbacks on files and folders.
 	 */
-	public static function traverse($path, string $pattern=null, callable $callback_file=null, callable $callback_dir=null, int $recursive=self::MAX_RECURSION, $args=null)
+	public static function traverse($path, string $pattern=null, callable $callback_file=null, callable $callback_dir=null, int $recursive=self::MAX_RECURSION, $args=null) : void
 	{
 		if (is_array($path))
 		{
@@ -43,7 +43,7 @@ final class Filewalker
 		$path = rtrim($path, '/\\');
 		
 		# Readable?
-		if (!($dir = @dir($path)))
+		if (!($dir = dir($path)))
 		{
 			return false;
 		}
@@ -52,7 +52,7 @@ final class Filewalker
 		$filestack = [];
 		while ($entry = $dir->read())
 		{
-			$fullpath = $path.'/'.$entry;
+			$fullpath = $path . DIRECTORY_SEPARATOR . $entry;
 			if ( (strpos($entry, '.') === 0) ) # || (!is_readable($fullpath)) )
 			{
 				continue;
@@ -77,11 +77,7 @@ final class Filewalker
 		$dir->close();
 		
 		usort($filestack, function($a, $b) {
-			if (is_numeric($a[0]) && is_numeric($b[0]))
-			{
-				return $a[0] - $b[0];
-			}
-			return strcasecmp($a[0], $b[0]);
+			return strnatcasecmp($a[0], $b[0]);
 		});
 		
 		if ($callback_file)
@@ -92,7 +88,9 @@ final class Filewalker
     		}
 		}
 		
-		usort($dirstack, function($a, $b){ return strnatcasecmp($a[0], $b[0]); });
+		usort($dirstack, function($a, $b) {
+			return strnatcasecmp($a[0], $b[0]);
+		});
 
 	    if ($callback_dir)
 	    {
