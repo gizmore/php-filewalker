@@ -16,6 +16,9 @@ namespace gizmore;
  */
 final class Filewalker
 {
+	/**
+	 * Maximum and default recursion level.
+	 */
 	const MAX_RECURSION = 256;
 	
 	/**
@@ -43,11 +46,13 @@ final class Filewalker
 		$path = rtrim($path, '/\\');
 		
 		# Readable?
-		if (!($dir = dir($path)))
+		if (!is_dir($path))
 		{
 			return;
 		}
-		
+
+		$dir = dir($path);
+
 		$dirstack = [];
 		$filestack = [];
 		while ($entry = $dir->read())
