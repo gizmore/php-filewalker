@@ -45,7 +45,7 @@ final class Filewalker
 		# Readable?
 		if (!($dir = dir($path)))
 		{
-			return false;
+			return;
 		}
 		
 		$dirstack = [];
