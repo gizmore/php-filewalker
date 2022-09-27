@@ -109,7 +109,7 @@ final class Filewalker
 		{
             foreach ($dirstack as $d)
             {
-                self::traverse($d[1], $pattern, $callback_file, $callback_dir, $recursive - 1, $args);
+                self::traverse($d[1], $pattern, $callback_file, $callback_dir, $recursive - 1, $args, $ds);
             }
 		}
 	}
