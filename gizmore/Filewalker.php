@@ -32,13 +32,13 @@ final class Filewalker
 	/**
 	 * Traverse a directory and execute callbacks on files and folders.
 	 */
-	public static function traverse($path, string $pattern=null, callable $callback_file=null, callable $callback_dir=null, int $recursive=self::MAX_RECURSION, $args=null) : void
+	public static function traverse($path, string $pattern=null, callable $callback_file=null, callable $callback_dir=null, int $recursive=self::MAX_RECURSION, $args=null, string $ds=DIRECTORY_SEPARATOR) : void
 	{
 		if (is_array($path))
 		{
 			foreach ($path as $_path)
 			{
-				self::traverse($_path, $pattern, $callback_file, $callback_dir, $recursive, $args);
+				self::traverse($_path, $pattern, $callback_file, $callback_dir, $recursive, $args, $ds);
 			}
 			return;
 		}
@@ -57,7 +57,7 @@ final class Filewalker
 		$filestack = [];
 		while ($entry = $dir->read())
 		{
-			$fullpath = $path . DIRECTORY_SEPARATOR . $entry;
+			$fullpath = $path . $ds . $entry;
 			if ( (strpos($entry, '.') === 0) ) # || (!is_readable($fullpath)) )
 			{
 				continue;
